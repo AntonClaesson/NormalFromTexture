@@ -1,0 +1,54 @@
+# CompilerName=lcc64
+# Mode=optim
+ninja_required_version = 1.3
+
+# Basic folders
+root = .
+builddir = $root\build\win64
+matlabdir = D:\Matlab
+startdir = C:\Users\Anton\Desktop\NormalFromTexture
+
+# Toolchain information
+cc = lcc64
+cxx = 
+linker = lcclnk64
+linkerxx = 
+
+cflags =  -nodeclspec -Zp8 -dll -c -I"$matlabdir\sys\lcc64\lcc64\include64" -DMATLAB_MEX_FILE -noregistrylookup -DNDEBUG -I"$root" -I"$startdir" -I"$matlabdir\extern\include" -I"$root\interface" -I"." -DMODEL=normalFromTexture_mex  
+
+cxxflags =  -I"$root" -I"$startdir" -I"$matlabdir\extern\include" -I"$root\interface" -I"." -DMODEL=normalFromTexture_mex  
+
+ldflags =  -dll -L"$matlabdir\sys\lcc64\lcc64\lib64" -L"$matlabdir\extern\lib\win64\microsoft" -entry LibMain libmx.lib libmex.lib libmat.lib libemlrt.lib libcovrt.lib libut.lib libmwmathutil.lib -o normalFromTexture_mex.mexw64 -s  "$matlabdir\extern\lib\win64\microsoft\libmwrgb2gray_tbb.lib" "$matlabdir\extern\lib\win64\microsoft\libmwippfilter.lib" "$matlabdir\extern\lib\win64\microsoft\libmwgrayto8.lib" "$matlabdir\extern\lib\win64\microsoft\libmwimfilter.lib" normalFromTexture_mex.def
+
+# Build Rules
+rule cc
+    command = $cc $cflags $in -Fo$out
+
+rule cxx
+    command = $cxx $cxxflags $in -Fo$out
+
+rule link
+    command = $linker $in $ldflags
+
+rule linkxx
+    command = $linkerxx $in $ldflags
+
+# Build
+build $builddir\rt_nonfinite.obj : cc $root\rt_nonfinite.c
+build $builddir\normalFromTexture_data.obj : cc $root\normalFromTexture_data.c
+build $builddir\normalFromTexture_initialize.obj : cc $root\normalFromTexture_initialize.c
+build $builddir\normalFromTexture_terminate.obj : cc $root\normalFromTexture_terminate.c
+build $builddir\normalFromTexture.obj : cc $root\normalFromTexture.c
+build $builddir\power.obj : cc $root\power.c
+build $builddir\eml_int_forloop_overflow_check.obj : cc $root\eml_int_forloop_overflow_check.c
+build $builddir\imfilter.obj : cc $root\imfilter.c
+build $builddir\sqrt.obj : cc $root\sqrt.c
+build $builddir\_coder_normalFromTexture_api.obj : cc $root\interface\_coder_normalFromTexture_api.c
+build $builddir\_coder_normalFromTexture_mex.obj : cc $root\interface\_coder_normalFromTexture_mex.c
+build $builddir\normalFromTexture_emxutil.obj : cc $root\normalFromTexture_emxutil.c
+build $builddir\_coder_normalFromTexture_info.obj : cc $root\interface\_coder_normalFromTexture_info.c
+build $builddir\c_mexapi_version.obj : cc $matlabdir\extern\version\c_mexapi_version.c
+build $builddir\lccstub.obj : cc $matlabdir\sys\lcc64\lcc64\mex\lccstub.c
+
+# Link
+build $root\normalFromTexture_mex.mexw64 : link $builddir\rt_nonfinite.obj $builddir\normalFromTexture_data.obj $builddir\normalFromTexture_initialize.obj $builddir\normalFromTexture_terminate.obj $builddir\normalFromTexture.obj $builddir\power.obj $builddir\eml_int_forloop_overflow_check.obj $builddir\imfilter.obj $builddir\sqrt.obj $builddir\_coder_normalFromTexture_api.obj $builddir\_coder_normalFromTexture_mex.obj $builddir\normalFromTexture_emxutil.obj $builddir\_coder_normalFromTexture_info.obj $builddir\c_mexapi_version.obj $builddir\lccstub.obj 

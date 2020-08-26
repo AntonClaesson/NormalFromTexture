@@ -1,0 +1,15 @@
+LIBRARY normalFromTexture_mex.mexw64
+EXPORTS
+mexFunction
+mexfilerequiredapiversion
+emlrtMexFcnProperties
+normalFromTexture_initialize
+normalFromTexture_terminate
+normalFromTexture_atexit
+normalFromTexture
+emxEnsureCapacity_uint8_T
+emxEnsureCapacity_real_T
+emxInit_real_T
+emxFree_real_T
+emxInit_uint8_T
+emxFree_uint8_T
